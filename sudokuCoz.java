@@ -53,17 +53,22 @@ public class sudokuCoz {
     public static void main(String[] args) {
         // int[satir][sutun]
         int[][] tahta = {
-            {5, 3, 0, 0, 7, 0, 0, 0, 0},
-            {6, 0, 0, 1, 9, 5, 0, 0, 0},
-            {0, 9, 8, 0, 0, 0, 0, 6, 0},
-            {8, 0, 0, 0, 6, 0, 0, 0, 3},
-            {4, 0, 0, 8, 0, 3, 0, 0, 1},
-            {7, 0, 0, 0, 2, 0, 0, 0, 6},
-            {0, 6, 0, 0, 0, 0, 2, 8, 0},
-            {0, 0, 0, 4, 1, 9, 0, 0, 5},
-            {0, 0, 0, 0, 8, 0, 0, 7, 9}
+            {0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 3, 0, 8, 5},
+            {0, 0, 1, 0, 2, 0, 0, 0, 0},
+            {0, 0, 0, 5, 0, 7, 0, 0, 0},
+            {0, 0, 4, 0, 0, 0, 1, 0, 0},
+            {0, 9, 0, 0, 0, 0, 0, 0, 0},
+            {5, 0, 0, 0, 0, 0, 0, 7, 3},
+            {0, 0, 2, 0, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 4, 0, 0, 0, 9}
         };
-        if(coz(tahta));
-            yazdir(tahta);
+        long baslangicZamani = System.nanoTime();
+        boolean cozuldu = coz(tahta);
+        long bitisZamani = System.nanoTime();
+        double cozumSuresi = (bitisZamani - baslangicZamani) / 1000000000.0;
+        System.out.println("Çözüm süresi: "+ cozumSuresi + " saniye");
+        if(cozuldu) yazdir(tahta);
+        else System.out.println("Çözüm yok.");
     }
 }
