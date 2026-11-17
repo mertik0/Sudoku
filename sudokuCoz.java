@@ -1,0 +1,69 @@
+
+public class sudokuCoz {
+
+    public static void yazdir(int[][] tahta) {
+
+        for (int i = 0; i < tahta.length; i++) {
+            if(i%3==0) System.out.println("");
+            for (int a = 0; a < tahta[i].length; a++) {
+                if(a%3==0) System.out.print("| ");
+                System.out.print(tahta[i][a] + " ");
+                
+            }
+            System.out.println("");
+        }
+    }
+    
+    public static boolean uygunMu(int[][] tahta, int satir, int sutun, int sayi) {
+        for(int i=0; i<9;i++){
+            if(tahta[satir][i]==sayi) return false;
+        }
+        for(int i=0; i<9; i++){
+            if(tahta[i][sutun]==sayi) return false;
+        }
+        int kutuBaslangicSatiri= satir/3*3;
+        int kutuBaslangicSutunu = sutun/3*3;
+        for(int satirDenemeDegiskeni=0; satirDenemeDegiskeni<3;satirDenemeDegiskeni++){
+            for(int sutunDenemeDegiskeni=0; sutunDenemeDegiskeni<3; sutunDenemeDegiskeni++){
+                if(tahta[satirDenemeDegiskeni+kutuBaslangicSatiri][sutunDenemeDegiskeni+kutuBaslangicSutunu] == sayi) return false;
+            }
+        }
+        return true;
+    }
+    
+    public static boolean coz(int[][] tahta) {
+        for (int satir = 0; satir < 9; satir++) {
+            for (int sutun = 0; sutun < 9; sutun++) {
+                if (tahta[satir][sutun] == 0) {          
+                    for (int sayi = 1; sayi <= 9; sayi++) {
+                        if (uygunMu(tahta, satir, sutun, sayi)) {
+                            tahta[satir][sutun] = sayi;   
+                            if(coz(tahta)) return true;
+                            else tahta[satir][sutun] = 0;
+                            
+                        }
+                    }
+                    return false; 
+                }
+            }
+        }
+        return true; 
+    }
+
+    public static void main(String[] args) {
+        // int[satir][sutun]
+        int[][] tahta = {
+            {5, 3, 0, 0, 7, 0, 0, 0, 0},
+            {6, 0, 0, 1, 9, 5, 0, 0, 0},
+            {0, 9, 8, 0, 0, 0, 0, 6, 0},
+            {8, 0, 0, 0, 6, 0, 0, 0, 3},
+            {4, 0, 0, 8, 0, 3, 0, 0, 1},
+            {7, 0, 0, 0, 2, 0, 0, 0, 6},
+            {0, 6, 0, 0, 0, 0, 2, 8, 0},
+            {0, 0, 0, 4, 1, 9, 0, 0, 5},
+            {0, 0, 0, 0, 8, 0, 0, 7, 9}
+        };
+        if(coz(tahta));
+            yazdir(tahta);
+    }
+}
