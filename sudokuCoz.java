@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class sudokuCoz {
 
@@ -50,6 +51,29 @@ public class sudokuCoz {
         return true; 
     }
 
+    public static int[][] generate(){
+        int[][] board = new int[9][9];
+        for (int i = 0 ; i < board[0].length ; i++){
+            board[0][i] = i + 1;
+        } 
+
+        return board;
+    }
+
+    // Will use Fisher-Yates shuffle
+
+    public static void shuffle(int[][] arr){
+        Random rd = new Random();
+        int index = rd.nextInt(9);
+        for (int i = arr[0].length - 1 ; i >= 0 ; i--){
+            int temp = arr[0][index];
+            arr[0][index] = arr[0][i];
+            arr[0][i] = temp;
+        }
+
+    }
+
+
     public static void main(String[] args) {
         // int[satir][sutun]
         int[][] tahta = {
@@ -70,5 +94,12 @@ public class sudokuCoz {
         System.out.println("Çözüm süresi: "+ cozumSuresi + " saniye");
         if(cozuldu) yazdir(tahta);
         else System.out.println("Çözüm yok.");
+        System.out.println("============");
+        int[][] attempt = generate();
+
+        shuffle(attempt);
+
+        yazdir(attempt); //This is a temporary action.
+
     }
 }
