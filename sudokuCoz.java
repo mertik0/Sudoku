@@ -51,24 +51,46 @@ public class sudokuCoz {
         return true; 
     }
 
-    public static int[][] generate(){
+    private static boolean solve(int[][] board){
+        for (int row = 0 ; row < board.length ; row++){
+            for (int column = 0 ; column < board[0].length ; column++){
+                if (board[row][column] == 0){
+                    int[] numbers = {1,2,3,4,5,6,7,8,9};
+                    shuffle(numbers);
+                    for (int i = 0 ; i < numbers.length ; i++){
+                        if (uygunMu(board, row, column, numbers[i])){
+                            board[row][column] = numbers[i];
+                            if (solve(board)){
+                                return true;
+                            }
+                            board[row][column] = 0;
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static int[][] generate(){
         int[][] board = new int[9][9];
         for (int i = 0 ; i < board[0].length ; i++){
             board[0][i] = i + 1;
         } 
-        shuffle(board);
+        shuffle(board[0]);// Shuffles the first row.
+        solve(board);
         return board;
     }
 
     // Will use Fisher-Yates shuffle
-
-    public static void shuffle(int[][] arr){
+    private static void shuffle(int[] arr){
         Random rd = new Random();
-        for (int i = arr[0].length - 1 ; i >= 0 ; i--){
+        for (int i = arr.length - 1 ; i >= 0 ; i--){
             int index = rd.nextInt(i+1);
-            int temp = arr[0][index];
-            arr[0][index] = arr[0][i];
-            arr[0][i] = temp;
+            int temp = arr[index];
+            arr[index] = arr[i];
+            arr[i] = temp;
         }
     }
 
@@ -86,18 +108,14 @@ public class sudokuCoz {
             {0, 0, 2, 0, 1, 0, 0, 0, 0},
             {0, 0, 0, 0, 4, 0, 0, 0, 9}
         };
-        long baslangicZamani = System.nanoTime();
-        boolean cozuldu = coz(tahta);
-        long bitisZamani = System.nanoTime();
-        double cozumSuresi = (bitisZamani - baslangicZamani) / 1000000000.0;
-        System.out.println("Çözüm süresi: "+ cozumSuresi + " saniye");
-        if(cozuldu) yazdir(tahta);
-        else System.out.println("Çözüm yok.");
-        System.out.println("============");
-        int[][] attempt = generate();
-
-        shuffle(attempt);
-
-        yazdir(attempt); //This is a temporary action.
+        //long baslangicZamani = System.nanoTime();
+        //boolean cozuldu = coz(tahta);
+        //long bitisZamani = System.nanoTime();
+        //double cozumSuresi = (bitisZamani - baslangicZamani) / 1000000000.0;
+        //System.out.println("Çözüm süresi: "+ cozumSuresi + " saniye");
+        //if(cozuldu) yazdir(tahta);
+        //else System.out.println("Çözüm yok.");
+        System.out.println("==============");
+        yazdir(generate()); //This is a temporary action.
     }
 }
