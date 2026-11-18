@@ -1,66 +1,53 @@
 import java.util.Random;
+import java.util.Arrays;
 
 public class sudokuCoz {
 
-    public static void yazdir(int[][] tahta) {
-
-        for (int i = 0; i < tahta.length; i++) {
+    public static void printBoard(int[][] board) {  // Prints the whole board
+        System.out.println("============================");
+        for (int i = 0; i < board.length; i++) {
             if(i%3==0) System.out.println("");
-            for (int a = 0; a < tahta[i].length; a++) {
+            for (int a = 0; a < board[i].length; a++) {
                 if(a%3==0) System.out.print("| ");
-                System.out.print(tahta[i][a] + " ");
+                System.out.print(board[i][a] + " ");
                 
             }
             System.out.println("");
         }
+        System.out.println("");
+        System.out.println("============================");
     }
     
-    public static boolean uygunMu(int[][] tahta, int satir, int sutun, int sayi) {
+    // Checks if the number is suitable for that particular row, column and box.
+    public static boolean isNumberSuitable(int[][] board, int row, int column, int number) { 
         for(int i=0; i<9;i++){
-            if(tahta[satir][i]==sayi) return false;
+            if(board[row][i]==number) return false;
         }
         for(int i=0; i<9; i++){
-            if(tahta[i][sutun]==sayi) return false;
+            if(board[i][column]==number) return false;
         }
-        int kutuBaslangicSatiri= satir/3*3;
-        int kutuBaslangicSutunu = sutun/3*3;
-        for(int satirDenemeDegiskeni=0; satirDenemeDegiskeni<3;satirDenemeDegiskeni++){
-            for(int sutunDenemeDegiskeni=0; sutunDenemeDegiskeni<3; sutunDenemeDegiskeni++){
-                if(tahta[satirDenemeDegiskeni+kutuBaslangicSatiri][sutunDenemeDegiskeni+kutuBaslangicSutunu] == sayi) return false;
+        int boxStartingRow= row/3*3;
+        int boxStartingColumn = column/3*3;
+        for(int tryRow=0; tryRow<3;tryRow++){
+            for(int tryColumn=0; tryColumn<3; tryColumn++){
+                if(board[tryRow+boxStartingRow][tryColumn+boxStartingColumn] == number) return false;
             }
         }
         return true;
     }
     
-    public static boolean coz(int[][] tahta) {
-        for (int satir = 0; satir < 9; satir++) {
-            for (int sutun = 0; sutun < 9; sutun++) {
-                if (tahta[satir][sutun] == 0) {          
-                    for (int sayi = 1; sayi <= 9; sayi++) {
-                        if (uygunMu(tahta, satir, sutun, sayi)) {
-                            tahta[satir][sutun] = sayi;   
-                            if(coz(tahta)) return true;
-                            else tahta[satir][sutun] = 0;
-                            
-                        }
-                    }
-                    return false; 
-                }
-            }
-        }
-        return true; 
-    }
-
-    private static boolean solve(int[][] board){
+    
+    // Solves the board using a backtracking alghoritm.
+    private static boolean backtrackSolve(int[][] board){   
         for (int row = 0 ; row < board.length ; row++){
             for (int column = 0 ; column < board[0].length ; column++){
                 if (board[row][column] == 0){
                     int[] numbers = {1,2,3,4,5,6,7,8,9};
-                    shuffle(numbers);
+                    shuffle(numbers); //backtracks from a random number (1-9)
                     for (int i = 0 ; i < numbers.length ; i++){
-                        if (uygunMu(board, row, column, numbers[i])){
+                        if (isNumberSuitable(board, row, column, numbers[i])){
                             board[row][column] = numbers[i];
-                            if (solve(board)){
+                            if (backtrackSolve(board)){
                                 return true;
                             }
                             board[row][column] = 0;
@@ -73,13 +60,14 @@ public class sudokuCoz {
         return true;
     }
 
-    private static int[][] generate(){
+    // Generates a board with first row being randomized.
+    private static int[][] generate(){ 
         int[][] board = new int[9][9];
         for (int i = 0 ; i < board[0].length ; i++){
             board[0][i] = i + 1;
         } 
         shuffle(board[0]);// Shuffles the first row.
-        solve(board);
+        backtrackSolve(board);
         return board;
     }
 
@@ -94,10 +82,35 @@ public class sudokuCoz {
         }
     }
 
+    
+    /*
+    public static boolean onlyOneSolutionExists(int[][] board){
+        int[][] comparisionBoard = copyBoard(board);
+        backtrackSolve(board);
+        backtrackSolve(comparisionBoard);
+        if(Arrays.deepEquals(board, comparisionBoard)) return true;
+        return false;
+
+        //CONCEPT ONLY
+    }
+    */
+
+    
+    // May be used to copy boards and compare different alghoritms on them.
+    public static int[][] copyBoard(int[][] board){
+        int[][] newBoard = new int[board.length][board[0].length];
+        for (int i=0; i<board.length ; i++) {
+            for (int j=0 ;j<board[0].length ;j++ ) {
+                newBoard[i][j] = board[i][j];
+            }
+        }
+        return newBoard;
+    }
+
 
     public static void main(String[] args) {
         // int[satir][sutun]
-        int[][] tahta = {
+        int[][] startingBoard = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 3, 0, 8, 5},
             {0, 0, 1, 0, 2, 0, 0, 0, 0},
@@ -108,14 +121,25 @@ public class sudokuCoz {
             {0, 0, 2, 0, 1, 0, 0, 0, 0},
             {0, 0, 0, 0, 4, 0, 0, 0, 9}
         };
-        //long baslangicZamani = System.nanoTime();
-        //boolean cozuldu = coz(tahta);
-        //long bitisZamani = System.nanoTime();
-        //double cozumSuresi = (bitisZamani - baslangicZamani) / 1000000000.0;
-        //System.out.println("Çözüm süresi: "+ cozumSuresi + " saniye");
-        //if(cozuldu) yazdir(tahta);
-        //else System.out.println("Çözüm yok.");
-        System.out.println("==============");
-        yazdir(generate()); //This is a temporary action.
+        
+
+        /*
+
+        long startTime = System.nanoTime();
+        backtrackSolve(startingBoard);
+        long endTime = System.nanoTime();
+        double solutionTime = (endTime - startTime) / 1000000000.0;
+        System.out.println("Solution time: "+ solutionTime + " seconds");
+     
+         */
+
+        //if(backtrackSolve(startingBoard)) printBoard(tahta);
+        //else System.out.println("No solution exists for this starting board.");
+        
+
+        //backtrackSolve(startingBoard);
+        //System.out.println("Only one solution exists: "+ onlyOneSolutionExists(startingBoard));
+        
+        printBoard(generate()); //This is a temporary action.
     }
 }
