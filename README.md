@@ -12,6 +12,8 @@ Sudoku is a logic based game. In classic sudoku, the objective is to fill a 9×9
 2. More alghoritms.
 3. Not only 9x9 sudoku but also 16x16 or more complex sudokus.
 4. Publish benchmark comparisions of solution times (different alghoritms + different computers = different solution times).
+5. Expected solution time (expected solution time for backtracking -> numberOfExpectedRecursions*averageSecondsForRecursions, averageSecondsForRecursions variable should be cpu specific.)
+6. Import starting boards from a file and/or generate a new board from scratch that is solvable.
 
 ## How does the program work?
 
