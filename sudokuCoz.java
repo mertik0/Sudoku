@@ -56,7 +56,7 @@ public class sudokuCoz {
         for (int i = 0 ; i < board[0].length ; i++){
             board[0][i] = i + 1;
         } 
-
+        shuffle(board);
         return board;
     }
 
@@ -64,13 +64,12 @@ public class sudokuCoz {
 
     public static void shuffle(int[][] arr){
         Random rd = new Random();
-        int index = rd.nextInt(9);
         for (int i = arr[0].length - 1 ; i >= 0 ; i--){
+            int index = rd.nextInt(i+1);
             int temp = arr[0][index];
             arr[0][index] = arr[0][i];
             arr[0][i] = temp;
         }
-
     }
 
 
@@ -100,6 +99,5 @@ public class sudokuCoz {
         shuffle(attempt);
 
         yazdir(attempt); //This is a temporary action.
-
     }
 }
