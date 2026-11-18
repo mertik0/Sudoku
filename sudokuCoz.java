@@ -108,6 +108,26 @@ public class sudokuCoz {
     }
 
 
+    // Measures how long does it take to solve on average, can measure different alghoritms with a few tweaks. 
+    public static void measureSolutionTime(int[][] board, int solveTimes){
+        double solutionTimeSum=0;
+        int[][] dummyBoard = copyBoard(board);
+
+        for (int i=0;i<solveTimes ; i++) {
+            dummyBoard = copyBoard(board);
+            long startTime = System.nanoTime();
+            backtrackSolve(dummyBoard);
+            long endTime = System.nanoTime();
+            double solutionTime = (endTime - startTime) / 1000000000.0;
+            solutionTimeSum += solutionTime;
+            System.out.println("("+(i+1)+")"+" Solution time for backtracking: " + solutionTime + " seconds");
+        }
+
+        System.out.println("Solved "+ solveTimes+" times, average time for a solution: "+ solutionTimeSum/solveTimes);
+        
+    }
+
+
     public static void main(String[] args) {
         // int[satir][sutun]
         int[][] startingBoard = {
@@ -123,15 +143,7 @@ public class sudokuCoz {
         };
         
 
-        /*
-
-        long startTime = System.nanoTime();
-        backtrackSolve(startingBoard);
-        long endTime = System.nanoTime();
-        double solutionTime = (endTime - startTime) / 1000000000.0;
-        System.out.println("Solution time: "+ solutionTime + " seconds");
-     
-         */
+       //measureSolutionTime(startingBoard, 5);
 
         //if(backtrackSolve(startingBoard)) printBoard(tahta);
         //else System.out.println("No solution exists for this starting board.");
