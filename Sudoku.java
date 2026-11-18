@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Arrays;
 
-public class sudokuCoz {
+public class Sudoku {
 
     public static void printBoard(int[][] board) {  // Prints the whole board
         System.out.println("============================");
