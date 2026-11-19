@@ -1,9 +1,11 @@
 import java.util.Random;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Sudoku {
 
-    public static void printBoard(int[][] board) {  // Prints the whole board
+
+    public static void printBoard(int[][] board) {  // Prints the whole board, needs an update to print 16x16 boards. use "Math.sqrt()"
         System.out.println("============================");
         for (int i = 0; i < board.length; i++) {
             if(i%3==0) System.out.println("");
@@ -84,14 +86,11 @@ public class Sudoku {
 
     
     /*
-    public static boolean onlyOneSolutionExists(int[][] board){
+    public static int solutionCount(int[][] board){
         int[][] comparisionBoard = copyBoard(board);
-        backtrackSolve(board);
-        backtrackSolve(comparisionBoard);
-        if(Arrays.deepEquals(board, comparisionBoard)) return true;
-        return false;
+        if(backtrackSolve(comparisionBoard)) solutionCount++;
+        return solutionCount;
 
-        //CONCEPT ONLY
     }
     */
 
@@ -127,6 +126,15 @@ public class Sudoku {
         
     }
 
+    public static int[][] stringToBoard(String input){ // Needs an update, fix possible outOfBounds exception by filling the remaining of the board with 0, try other stringToBoard mechanisms. Make it possible to generate 16x16 boards. Doesn't work on ide(sublime text) for some reason?
+        int[][] newBoard = new int[9][9];
+        for (int i=0;i<9;i++) {
+             for (int j=0;j<9 ;j++ ) {
+                newBoard[i][j] = Integer.valueOf(input.split("")[(i*9+j)]);
+             }
+         } 
+         return newBoard;
+    }
 
     public static void main(String[] args) {
         // int[satir][sutun]
@@ -145,12 +153,14 @@ public class Sudoku {
 
        //measureSolutionTime(startingBoard, 5);
 
-        //if(backtrackSolve(startingBoard)) printBoard(tahta);
-        //else System.out.println("No solution exists for this starting board.");
         
-
+        
+        Scanner sc = new Scanner(System.in);
         //backtrackSolve(startingBoard);
         //System.out.println("Only one solution exists: "+ onlyOneSolutionExists(startingBoard));
+
+        //String a = sc.nextLine();
+        //printBoard(stringToBoard(a));
         
         printBoard(generate()); //This is a temporary action.
     }
