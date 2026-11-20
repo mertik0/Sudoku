@@ -8,18 +8,16 @@ public class Sudoku {
 
 
     public static void printBoard(int[][] board) {  // Prints the whole board, needs an update to print 16x16 boards. use "Math.sqrt()"
-        System.out.println("============================");
         for (int i = 0; i < board.length; i++) {
-            if(i%3==0) System.out.println("");
-            for (int a = 0; a < board[i].length; a++) {
-                if(a%3==0) System.out.print("| ");
-                System.out.print(board[i][a] + " ");
+            if(i%3==0 || i==9) System.out.println("");
+            for (int j = 0; j < board[i].length; j++) {
+                if(j%3==0) System.out.print("| ");
+                System.out.print(board[i][j] + " ");
                 
             }
             System.out.println("");
         }
         System.out.println("");
-        System.out.println("============================");
     }
     
     // Checks if the number is suitable for that particular row, column and box.
@@ -74,23 +72,41 @@ public class Sudoku {
         return true;
     }
 
-    // Generates a board with first row being randomized.
-    private static int[][] generate(){ 
+    // gets board: testBoard/randomized/imported
+    private static int[][] getBoard(String rule, int hardness){
+        // board[row][column]
         int[][] board = new int[9][9];
-        for (int i = 0 ; i < board[0].length ; i++){
-            board[0][i] = i + 1;
-        } 
-        shuffle(board[0]);// Shuffles the first row.
-        backtrackSolve(board);
+        if (rule.equals("testBoard")) {
+            board = new int[][] {
+                {0, 8, 7, 6, 5, 4, 3, 2, 1},
+                {2, 4, 6, 1, 7, 3, 9, 8, 5},
+                {3, 5, 1, 9, 2, 8, 7, 4, 6},
+                {1, 2, 8, 5, 3, 7, 6, 9, 4},
+                {6, 3, 4, 8, 9, 2, 1, 5, 7},
+                {7, 9, 5, 4, 6, 1, 8, 3, 2},
+                {5, 1, 9, 2, 8, 6, 4, 7, 3},
+                {4, 7, 2, 3, 1, 9, 5, 6, 8},
+                {8, 6, 3, 7, 4, 5, 2, 1, 9}
+            };
+             
+         } else if (rule.equals("random")) {
+            for (int i = 0 ; i < board[0].length ; i++){
+                board[0][i] = i + 1;
+            } 
+            shuffle(board[0]);// Shuffles the first row.
+            backtrackSolve(board);
+        } else if (rule.equals("import")){
+            //import code here
+            board = new int[9][9]; 
+        }
         return board;
     }
 
     // Will use Fisher-Yates shuffle
-    private static final Random RD = new Random();
-
-    private static void shuffle(int[] arr) {
-        for (int i = arr.length - 1; i > 0; i--) {
-            int index = RD.nextInt(i + 1);
+    private static void shuffle(int[] arr){
+        Random rd = new Random();
+        for (int i = arr.length - 1 ; i >= 0 ; i--){
+            int index = rd.nextInt(i+1);
             int temp = arr[index];
             arr[index] = arr[i];
             arr[i] = temp;
@@ -159,15 +175,12 @@ public class Sudoku {
             System.out.println("Solving the board hold on for a few seconds...");
             backtrackSolve(dummyBoard);
             System.out.println("Solved the board.");
-            printBoard(dummyBoard);
         }
-        System.out.println("What number?");
-        int numberToBeFilled = sc.nextInt();
-        System.out.println("Which row?");
-        int rowToBeFilled = sc.nextInt();
-        System.out.println("Which column?");
-        int columnToBeFilled = sc.nextInt();
-
+        System.out.println("Enter your guess with this format: number, row, column");
+        String guess = sc.nextLine();
+        int numberToBeFilled = Integer.valueOf(guess.split(" ")[0]);
+        int rowToBeFilled = Integer.valueOf(guess.split(" ")[1]);
+        int columnToBeFilled = Integer.valueOf(guess.split(" ")[2]);
         if (tellMistake) {
             if (Integer.valueOf(dummyBoard[rowToBeFilled][columnToBeFilled])==numberToBeFilled) {
                 board[rowToBeFilled][columnToBeFilled] = numberToBeFilled;
@@ -197,36 +210,20 @@ public class Sudoku {
         return true;
     }
 
-    public static void main(String[] args) {
-        // int[satir][sutun]
-        int[][] startingBoard = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 3, 0, 8, 5},
-            {0, 0, 1, 0, 2, 0, 0, 0, 0},
-            {0, 0, 0, 5, 0, 7, 0, 0, 0},
-            {0, 0, 4, 0, 0, 0, 1, 0, 0},
-            {0, 9, 0, 0, 0, 0, 0, 0, 0},
-            {5, 0, 0, 0, 0, 0, 0, 7, 3},
-            {0, 0, 2, 0, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 4, 0, 0, 0, 9}
-        };
-        
-
-                 
+    public static void gameplay(){
         //System.out.println("How hard do you want your starting board to be? Easy(1), medium(2), hard(3).");
-        //int hardnessBoard = sc.nextInt();
-        //generate(hardnessBoard);
-        
-        //System.out.println("Would you prefer the game to tell you if you made a mistake? true/false");
-        //boolean tellMistake = sc.nextBoolean();
-        //solveWithUser(startingBoard, tellMistake);
-        
-        printBoard(startingBoard);
-        System.out.println("Board solved? "+ isBoardSolved(startingBoard));
-        backtrackSolve(startingBoard);
-        printBoard(startingBoard);
-        System.out.println("Board solved? "+ isBoardSolved(startingBoard));
+        int[][] board = getBoard("testBoard", 0);
+        while (!isBoardSolved(board)){
+            solveWithUser(board, false);
+            //backtrackSolve(board);
+            //printBoard(board);
+        }
+        System.out.println("You won!");
+    }
 
-        //printBoard(generate()); //This is a temporary action.
+    public static void main(String[] args) {
+        
+       gameplay();
+
     }
 }
