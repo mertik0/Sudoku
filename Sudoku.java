@@ -86,10 +86,11 @@ public class Sudoku {
     }
 
     // Will use Fisher-Yates shuffle
-    private static void shuffle(int[] arr){
-        Random rd = new Random();
-        for (int i = arr.length - 1 ; i >= 0 ; i--){
-            int index = rd.nextInt(i+1);
+    private static final Random RD = new Random();
+
+    private static void shuffle(int[] arr) {
+        for (int i = arr.length - 1; i > 0; i--) {
+            int index = RD.nextInt(i + 1);
             int temp = arr[index];
             arr[index] = arr[i];
             arr[i] = temp;
