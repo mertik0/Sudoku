@@ -18,6 +18,7 @@ Sudoku is a logic based game. In classic sudoku, the objective is to fill a 9×9
 8. A action method that decides how the program is used (for benchmark/solving or other).
 9. Will add records for state of the board in each round.
 10. Make printboard method as such that instead of program printing boards everytime, program *updates* the already printed board (for aesthetic purposes).
+11. Give user the option to save/load boards.
 
 ## How does the program work?
 
