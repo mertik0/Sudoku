@@ -23,19 +23,29 @@ public class Sudoku {
     }
     
     // Checks if the number is suitable for that particular row, column and box.
-    public static boolean isNumberSuitable(int[][] board, int row, int column, int number) { 
-        for(int i=0; i<9;i++){
-            if(board[row][i]==number) return false;
-        }
-        for(int i=0; i<9; i++){
-            if(board[i][column]==number) return false;
-        }
-        int boxStartingRow= row/3*3;
-        int boxStartingColumn = column/3*3;
-        for(int tryRow=0; tryRow<3;tryRow++){
-            for(int tryColumn=0; tryColumn<3; tryColumn++){
-                if(board[tryRow+boxStartingRow][tryColumn+boxStartingColumn] == number) return false;
+    public static boolean isNumberSuitable(int[][] board, int row, int column, int number) {
+        if (board[row][column] == 0) {
+            for(int i=0; i<9;i++){
+                if(board[row][i]==number) return false;
             }
+            for(int i=0; i<9; i++){
+                if(board[i][column]==number) return false;
+            }
+            int boxStartingRow= row/3*3;
+            int boxStartingColumn = column/3*3;
+            for(int tryRow=0; tryRow<3;tryRow++){
+                for(int tryColumn=0; tryColumn<3; tryColumn++){
+                    if(board[tryRow+boxStartingRow][tryColumn+boxStartingColumn] == number) return false;
+                }
+            }
+        } else {
+            for (int i=0;i<9;i++) {
+                if (board[row][column] == board[i][column] && row!=i) return false;
+            }
+            for (int j=0;j<9;j++){
+                if(board[row][column] == board[row][j] && column !=j) return false;
+            }
+
         }
         return true;
     }
@@ -176,6 +186,16 @@ public class Sudoku {
 
     }
 
+    public static boolean isBoardSolved(int[][] board){
+        for (int i=0;i<9;i++) {
+            for (int j=0;j<9;j++) {
+                if (board[i][j]==0) return false;
+                if (!(isNumberSuitable(board, i, j, board[i][j]))) return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         // int[satir][sutun]
         int[][] startingBoard = {
@@ -195,9 +215,17 @@ public class Sudoku {
         //System.out.println("How hard do you want your starting board to be? Easy(1), medium(2), hard(3).");
         //int hardnessBoard = sc.nextInt();
         //generate(hardnessBoard);
-        System.out.println("Would you prefer the game to tell you if you made a mistake? true/false");
-        boolean tellMistake = sc.nextBoolean();
-        solveWithUser(startingBoard, tellMistake);
+        
+        //System.out.println("Would you prefer the game to tell you if you made a mistake? true/false");
+        //boolean tellMistake = sc.nextBoolean();
+        //solveWithUser(startingBoard, tellMistake);
+        
+        printBoard(startingBoard);
+        System.out.println("Board solved? "+ isBoardSolved(startingBoard));
+        backtrackSolve(startingBoard);
+        printBoard(startingBoard);
+        System.out.println("Board solved? "+ isBoardSolved(startingBoard));
+
         //printBoard(generate()); //This is a temporary action.
     }
 }
