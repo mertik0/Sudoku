@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class Sudoku {
 
+    static Scanner sc = new Scanner(System.in);
+
 
     public static void printBoard(int[][] board) {  // Prints the whole board, needs an update to print 16x16 boards. use "Math.sqrt()"
         System.out.println("============================");
@@ -126,7 +128,8 @@ public class Sudoku {
         
     }
 
-    public static int[][] stringToBoard(String input){ // Needs an update, fix possible outOfBounds exception by filling the remaining of the board with 0, try other stringToBoard mechanisms. Make it possible to generate 16x16 boards. Doesn't work on ide(sublime text) for some reason?
+    // Turns a 81char string to a 9x9 board. Needs an update, fix possible outOfBounds exception by filling the remaining of the board with 0, try other stringToBoard mechanisms. Make it possible to generate 16x16 boards.
+    public static int[][] stringToBoard(String input){
         int[][] newBoard = new int[9][9];
         for (int i=0;i<9;i++) {
              for (int j=0;j<9 ;j++ ) {
@@ -134,6 +137,43 @@ public class Sudoku {
              }
          } 
          return newBoard;
+    }
+
+
+    // Needs to be in a while(boardNotSolved) loop.
+    public static void solveWithUser(int[][] board, boolean tellMistake){
+        int[][] dummyBoard = copyBoard(board);
+        printBoard(board);
+        if (tellMistake) {
+            System.out.println("Solving the board hold on for a few seconds...");
+            backtrackSolve(dummyBoard);
+            System.out.println("Solved the board.");
+            printBoard(dummyBoard);
+        }
+        System.out.println("What number?");
+        int numberToBeFilled = sc.nextInt();
+        System.out.println("Which row?");
+        int rowToBeFilled = sc.nextInt();
+        System.out.println("Which column?");
+        int columnToBeFilled = sc.nextInt();
+
+        if (tellMistake) {
+            if (Integer.valueOf(dummyBoard[rowToBeFilled][columnToBeFilled])==numberToBeFilled) {
+                board[rowToBeFilled][columnToBeFilled] = numberToBeFilled;
+                System.out.println("Correct.");
+            } else {
+                System.out.println("Not correct.");
+            }            
+        } else{
+                if (isNumberSuitable(board, rowToBeFilled, columnToBeFilled, numberToBeFilled)) {
+                    board[rowToBeFilled][columnToBeFilled] = numberToBeFilled;
+                } else {
+                    System.out.println("Number is not suitable.");
+            }
+        }
+        
+        printBoard(board);
+
     }
 
     public static void main(String[] args) {
@@ -151,17 +191,13 @@ public class Sudoku {
         };
         
 
-       //measureSolutionTime(startingBoard, 5);
-
-        
-        
-        Scanner sc = new Scanner(System.in);
-        //backtrackSolve(startingBoard);
-        //System.out.println("Only one solution exists: "+ onlyOneSolutionExists(startingBoard));
-
-        //String a = sc.nextLine();
-        //printBoard(stringToBoard(a));
-        
-        printBoard(generate()); //This is a temporary action.
+                 
+        //System.out.println("How hard do you want your starting board to be? Easy(1), medium(2), hard(3).");
+        //int hardnessBoard = sc.nextInt();
+        //generate(hardnessBoard);
+        System.out.println("Would you prefer the game to tell you if you made a mistake? true/false");
+        boolean tellMistake = sc.nextBoolean();
+        solveWithUser(startingBoard, tellMistake);
+        //printBoard(generate()); //This is a temporary action.
     }
 }
