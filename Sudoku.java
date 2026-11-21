@@ -50,7 +50,7 @@ public class Sudoku {
     
     
     // Solves the board using a backtracking alghoritm.
-    private static boolean backtrackSolve(int[][] board){   
+    private static boolean backtrackSolve(int[][] board){ 
         for (int row = 0 ; row < board.length ; row++){
             for (int column = 0 ; column < board[0].length ; column++){
                 if (board[row][column] == 0){
@@ -78,7 +78,7 @@ public class Sudoku {
         int[][] board = new int[9][9];
         if (rule.equals("testBoard")) {
             board = new int[][] {
-                {0, 8, 7, 6, 5, 4, 3, 2, 1},
+                {0, 0, 7, 6, 5, 4, 3, 2, 1},
                 {2, 4, 6, 1, 7, 3, 9, 8, 5},
                 {3, 5, 1, 9, 2, 8, 7, 4, 6},
                 {1, 2, 8, 5, 3, 7, 6, 9, 4},
@@ -98,15 +98,29 @@ public class Sudoku {
         } else if (rule.equals("import")){
             //import code here
             board = new int[9][9]; 
+        } else if (rule.equals("testBoardHard")){
+            board = new int[][] {
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 3, 0, 8, 5},
+                {0, 0, 1, 0, 2, 0, 0, 0, 0},
+                {0, 0, 0, 5, 0, 7, 0, 0, 0},
+                {0, 0, 4, 0, 0, 0, 1, 0, 0},
+                {0, 9, 0, 0, 0, 0, 0, 0, 0},
+                {5, 0, 0, 0, 0, 0, 0, 7, 3},
+                {0, 0, 2, 0, 1, 0, 0, 0, 0},
+                {0, 0, 0, 0, 4, 0, 0, 0, 9}
+            };
         }
         return board;
     }
 
     // Will use Fisher-Yates shuffle
-    private static void shuffle(int[] arr){
-        Random rd = new Random();
-        for (int i = arr.length - 1 ; i >= 0 ; i--){
-            int index = rd.nextInt(i+1);
+
+    private static final Random RD = new Random();
+
+    private static void shuffle(int[] arr) {
+        for (int i = arr.length - 1; i > 0; i--) {
+            int index = RD.nextInt(i + 1);
             int temp = arr[index];
             arr[index] = arr[i];
             arr[i] = temp;
@@ -170,7 +184,6 @@ public class Sudoku {
     // Needs to be in a while(boardNotSolved) loop.
     public static void solveWithUser(int[][] board, boolean tellMistake){
         int[][] dummyBoard = copyBoard(board);
-        printBoard(board);
         if (tellMistake) {
             System.out.println("Solving the board hold on for a few seconds...");
             backtrackSolve(dummyBoard);
@@ -195,9 +208,6 @@ public class Sudoku {
                     System.out.println("Number is not suitable.");
             }
         }
-        
-        printBoard(board);
-
     }
 
     public static boolean isBoardSolved(int[][] board){
@@ -210,10 +220,18 @@ public class Sudoku {
         return true;
     }
 
+    // Credits to claude
+    public static void clearScreen(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static void gameplay(){
         //System.out.println("How hard do you want your starting board to be? Easy(1), medium(2), hard(3).");
         int[][] board = getBoard("testBoard", 0);
         while (!isBoardSolved(board)){
+            clearScreen();
+            printBoard(board);
             solveWithUser(board, false);
             //backtrackSolve(board);
             //printBoard(board);
@@ -222,7 +240,7 @@ public class Sudoku {
     }
 
     public static void main(String[] args) {
-        
+       
        gameplay();
 
     }
