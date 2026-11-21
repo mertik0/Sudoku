@@ -55,7 +55,7 @@ public class Sudoku {
             for (int column = 0 ; column < board[0].length ; column++){
                 if (board[row][column] == 0){
                     int[] numbers = {1,2,3,4,5,6,7,8,9};
-                    shuffle(numbers); //backtracks from a random number (1-9)
+                    //shuffle(numbers); //backtracks from a random number (1-9)
                     for (int i = 0 ; i < numbers.length ; i++){
                         if (isNumberSuitable(board, row, column, numbers[i])){
                             board[row][column] = numbers[i];
@@ -151,22 +151,13 @@ public class Sudoku {
 
 
     // Measures how long does it take to solve on average, can measure different alghoritms with a few tweaks. 
-    public static void measureSolutionTime(int[][] board, int solveTimes){
-        double solutionTimeSum=0;
+    public static double measureSolutionTime(int[][] board){
         int[][] dummyBoard = copyBoard(board);
-
-        for (int i=0;i<solveTimes ; i++) {
-            dummyBoard = copyBoard(board);
-            long startTime = System.nanoTime();
-            backtrackSolve(dummyBoard);
-            long endTime = System.nanoTime();
-            double solutionTime = (endTime - startTime) / 1000000000.0;
-            solutionTimeSum += solutionTime;
-            System.out.println("("+(i+1)+")"+" Solution time for backtracking: " + solutionTime + " seconds");
-        }
-
-        System.out.println("Solved "+ solveTimes+" times, average time for a solution: "+ solutionTimeSum/solveTimes);
-        
+        long startTime = System.nanoTime();
+        backtrackSolve(dummyBoard);
+        long endTime = System.nanoTime();
+        double solutionTime = (endTime - startTime) / 1000000000.0;
+        return solutionTime;        
     }
 
     // Turns a 81char string to a 9x9 board. Needs an update, fix possible outOfBounds exception by filling the remaining of the board with 0, try other stringToBoard mechanisms. Make it possible to generate 16x16 boards.
@@ -226,6 +217,27 @@ public class Sudoku {
         System.out.flush();
     }
 
+    // Concept
+    public static void json(String action, double number){
+        //import board
+        //change solutionTime(i)
+    }
+
+    //Benchmark under construction
+    public static void benchmark(int[][] board){
+        double solutionTimeSum =0;
+        double solutionTime = 0;
+        System.out.println("Make sure: your computer is plugged in, you have no open applications, you are running this from your OS terminal. PRESS ENTER TO CONTINUE");
+        // warm up? make sure: you just started your computer?
+        sc.nextLine();
+        for (int i =0;i<100 ; i++) {
+            solutionTime = measureSolutionTime(board);
+            System.out.println("("+(i+1)+")"+" Solution time: "+solutionTime);
+            solutionTimeSum += solutionTime;
+        }
+        System.out.println("Average solution time: "+(solutionTimeSum/100));
+    }
+
     public static void gameplay(){
         //System.out.println("How hard do you want your starting board to be? Easy(1), medium(2), hard(3).");
         int[][] board = getBoard("testBoard", 0);
@@ -241,7 +253,7 @@ public class Sudoku {
 
     public static void main(String[] args) {
        
-       gameplay();
-
+       //gameplay();
+        benchmark(getBoard("testBoardHard", 0));
     }
 }
