@@ -20,6 +20,7 @@ Sudoku is a logic based game. In classic sudoku, the objective is to fill a 9×9
 10. Make printboard method as such that instead of program printing boards everytime, program *updates* the already printed board (for aesthetic purposes).
 11. Give user the option to save/load boards.
 12. Complete a full gameplay experience.
+13. Make a website for test result visualization.
 
 ## How does the program work?
 
