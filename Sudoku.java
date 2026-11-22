@@ -218,7 +218,7 @@ public class Sudoku {
     }
 
     // Concept
-    public static void json(String action, double number){
+    public static void json(String action, double[] results){
         //import board
         //change solutionTime(i)
     }
@@ -226,14 +226,14 @@ public class Sudoku {
     //Benchmark under construction
     public static void benchmark(int[][] board){
         double solutionTimeSum =0;
-        double solutionTime = 0;
+        double[] solutionTime = new double[100];
         System.out.println("Make sure: your computer is plugged in, you have no open applications, you are running this from your OS terminal. PRESS ENTER TO CONTINUE");
         // warm up? make sure: you just started your computer?
         sc.nextLine();
         for (int i =0;i<100 ; i++) {
-            solutionTime = measureSolutionTime(board);
-            System.out.println("("+(i+1)+")"+" Solution time: "+solutionTime);
-            solutionTimeSum += solutionTime;
+            solutionTime[i] = measureSolutionTime(board);
+            System.out.println("("+(i+1)+")"+" Solution time: "+solutionTime[i]);
+            solutionTimeSum += solutionTime[i];
         }
         System.out.println("Average solution time: "+(solutionTimeSum/100));
     }
