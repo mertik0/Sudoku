@@ -32,5 +32,5 @@
 ## November 23, 2026
 
 * Created docs/milestones.md to keep track of progress and practice documentation.
-* Splitted Sudoku.java into Main.java (where most of the program is still are) and Board.java, removed all of the magic numbers from Board.java in order to achieve the goal of no magic numbers.
+* Splitted Sudoku.java into Main.java (where the most of the program still are) and Board.java, removed all of the magic numbers from Board.java in order to achieve the goal of no magic numbers.
 * All source code is now in src/main/
