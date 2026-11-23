@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Board {
 
 	// Prints the whole board, can print 4x4 / 9x9 / 16x16 ......
@@ -28,7 +30,6 @@ public class Board {
     // Turns a 81char string to a 9x9 board. Needs an update, fix possible outOfBounds exception by filling the remaining of the board with 0, try other stringToBoard mechanisms. Make it possible to generate 16x16 boards. MAKE THE BOARD A STRING[][] AND STORE VALUES FROM 1-9 AND A-G
     public static int[][] convert(String input){
 
-    	int[][] values = new int[(int)(Math.sqrt(input.split("").length))][(int)(Math.sqrt(input.split("").length))];
     	int length = (int)(Math.sqrt(input.split("").length));
         int[][] newBoard = new int[length][length];
         for (int i=0;i<length;i++) {
@@ -60,8 +61,8 @@ public class Board {
             for (int i = 0 ; i < board[0].length ; i++){
                 board[0][i] = i + 1;
             } 
-            Main.shuffle(board[0]);// Shuffles the first row.
-            Main.backtrackSolve(board);
+            shuffle(board[0]);// Shuffles the first row.
+            Solve.backtrack(board);
         } else if (rule.equals("import")){
             //import code here
             board = new int[9][9]; 
@@ -79,6 +80,18 @@ public class Board {
             };
         }
         return board;
+    }
+
+    // Will use Fisher-Yates shuffle
+    public static final Random RD = new Random();
+
+    public static void shuffle(int[] arr) {
+        for (int i = arr.length - 1; i > 0; i--) {
+            int index = RD.nextInt(i + 1);
+            int temp = arr[index];
+            arr[index] = arr[i];
+            arr[i] = temp;
+        }
     }
 
 
