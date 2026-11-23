@@ -40,17 +40,17 @@
 
 * Methods of the new Board.java :
   1. shuffle().
-  2. printBoard -> print.
-  3. getBoard -> get.
-  4. stringToBoard -> convert.
-  5. copyBoard -> copy.
+  2. printBoard() -> print().
+  3. getBoard() -> get().
+  4. stringToBoard() -> convert().
+  5. copyBoard() -> copy().
 
 
 * Created Solve.java from Main.java 
 
 * Methods of the new Solve.java
-  1. isNumberSuitable()
+  1. isNumberSuitable().
   2. backtrackSolve() -> backtrack().
-  3. isBoardSolved() -> isSolved())
+  3. isBoardSolved() -> isSolved().
   
 * All source code is now in src/main/ .
