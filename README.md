@@ -21,6 +21,7 @@ Sudoku is a logic based game. In classic sudoku, the objective is to fill a 9×9
 11. Give user the option to save/load boards.
 12. Complete a full gameplay experience.
 13. Make a website for test result visualization.
+14. add src, docs/milestone
 
 ## How does the program work?
 
