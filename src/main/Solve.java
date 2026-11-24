@@ -1,6 +1,8 @@
+import java.util.ArrayList;
+
 public class Solve {
 
-	// Checks if the number is suitable for that particular row, column and box.
+    // Checks if the number is suitable for that particular row, column and box.
     public static boolean isNumberSuitable(int[][] board, int row, int column, int number) {
         if (board[row][column] == 0) {
             for(int i=0; i<9;i++){
@@ -28,7 +30,7 @@ public class Solve {
         return true;
     }
 
-	// Solves the board using a backtracking alghoritm.
+    // Solves the board using a backtracking alghoritm.
     public static boolean backtrack(int[][] board){ 
         for (int row = 0 ; row < board.length ; row++){
             for (int column = 0 ; column < board[0].length ; column++){
@@ -52,8 +54,8 @@ public class Solve {
     }
 
     public static boolean isSolved(int[][] board){
-        for (int i=0;i<9;i++) {
-            for (int j=0;j<9;j++) {
+        for (int i=0;i<board.length;i++) {
+            for (int j=0;j<board[0].length;j++) {
                 if (board[i][j]==0) return false;
                 if (!(isNumberSuitable(board, i, j, board[i][j]))) return false;
             }
@@ -61,5 +63,52 @@ public class Solve {
         return true;
     }
 
+    public static int possibleNumberCount(int[][] board, int row, int column){
+        ArrayList<Integer> possibleNumbersArray = new ArrayList<Integer>(); // Create an ArrayList object
+        for (int rakam = 1;rakam<=9;rakam++) {
+            if (isNumberSuitable(board, row, column, rakam)) {
+                possibleNumbersArray.add(rakam);
+            }
+        }
+        return possibleNumbersArray.size();
+    }
+
+
+    public static int[][] checkAllPossibleNumbers(int[][] board){
+
+        int[][] cellPossibleNumberAmount = new int[9][9];
+        for (int i = 0;i<board.length;i++) {
+            for (int j = 0;j<board[0].length;j++) {
+                if (board[i][j] == 0) {
+                    cellPossibleNumberAmount[i][j] = possibleNumberCount(board, i ,j);
+                }
+            }
+        }
+        return cellPossibleNumberAmount;
+    }
+
+    /* DOESNT WORK
+    public static int[][] deneme(int[][] board){
+        int[][] cellPossibleNumberAmount = checkAllPossibleNumbers(board);
+        //Board.print(cellPossibleNumberAmount);
+        while(true) {
+            for (int row = 0;row<board.length;row++ ) {
+                for (int column = 0;column<board[0].length;column++ ) {
+                    if (cellPossibleNumberAmount[row][column] == 1) {
+                        for (int rakam = 1;rakam<=9;rakam++) {
+                            if (isNumberSuitable(board, row, column, rakam)) {
+                                System.out.println("hit");
+                                board[row][column] = rakam;
+                                cellPossibleNumberAmount = checkAllPossibleNumbers(board);
+                            }
+                        }
+                    }
+                }
+            }
+            if (isSolved(board)) break;
+        }
+        return board;
+    } 
+    */
 
 }
