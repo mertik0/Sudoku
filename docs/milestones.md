@@ -54,3 +54,9 @@
   3. isBoardSolved() -> isSolved().
   
 * All source code is now in src/main/ .
+
+## November 24, 2026
+
+* Added 2 important methods for Solve.java:
+  1. possibleNumberCount(int[][] board, int row, int column) for adding suitable numbers for that particular cell using isNumberSuitable() into a ArrayList cellPossibleNumberAmount and returns cellPossibleNumberAmount.size();
+  2. checkAllPossibleNumbers(int[][] board) for counting every suitable number for every empty cell on the board and turning the counted values into a board.
