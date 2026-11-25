@@ -27,6 +27,10 @@ Sudoku is a logic based game. In classic sudoku, the objective is to fill a 9×9
 13. Make a website for test result visualization.
 14. add src, docs/milestone.
 15. divide the program into smaller files.
+16. Mail weekly sudoku puzzle.
+17. Difficulty rater.
+18. Suggest similar puzzles using difficulty rater.
+19. Add famous puzzles.s
 
 ## How does the program work?
 
